@@ -1,0 +1,19 @@
+﻿<!-- Views/Author/Edit.cshtml -->
+@model AuthorDTO
+
+<h2>Edit Author</h2>
+
+<form asp-action="Edit" asp-controller="Author" method="post">
+    <input type="hidden" asp-for="Id" />
+
+    <label asp-for="FirstName"></label>
+    <input asp-for="FirstName" />
+
+    <label asp-for="LastName"></label>
+    <input asp-for="LastName" />
+
+    <label asp-for="Age"></label>
+    <input asp-for="Age" />
+
+    <button type="submit">Save</button>
+</form>
