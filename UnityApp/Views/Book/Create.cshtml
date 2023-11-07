@@ -1,0 +1,31 @@
+﻿<!-- Create.cshtml -->
+@model UnityApp.Models.BookDTO
+@using (Html.BeginForm("Create", "Book", FormMethod.Post))
+{
+    <h2>Create Book</h2>
+
+    <div class="form-group">
+        <label asp-for="Title">Title</label>
+        <input asp-for="Title" class="form-control" />
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="PublishYear">Publish Year</label>
+        <input asp-for="PublishYear" class="form-control" />
+        <span asp-validation-for="PublishYear" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="AuthorId">Author</label>
+        <select asp-for="AuthorId" asp-items="@(new SelectList(ViewBag.Authors, "Id", "FirstName"))" class="form-control">
+            <option value="">Select an author</option>
+        </select>
+        <span asp-validation-for="AuthorId" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Create</button>
+}
+
+@section Scripts {
+    <script>
+        // Add any additional scripts if needed
+    </script>
+}

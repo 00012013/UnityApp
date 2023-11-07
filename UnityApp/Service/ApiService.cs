@@ -83,7 +83,7 @@ public class ApiService
 
     public async Task<IEnumerable<Book>> GetAllBooks()
     {
-        var response = await _httpClient.GetAsync("http://localhost:5058/api/books");
+        var response = await _httpClient.GetAsync(BaseApi + "/api/books");
 
         if (response.IsSuccessStatusCode)
         {
@@ -99,6 +99,56 @@ public class ApiService
         // Handle unsuccessful API request
         throw new Exception($"Failed to retrieve books. Status code: {response.StatusCode}");
     }
+    public async Task AddBook(BookDTO bookDTO)
+    {
+        var json = JsonSerializer.Serialize(bookDTO);
+        var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-    // Other methods for creating, updating, and deleting data can be added similarly
+        var response = await _httpClient.PostAsync(BaseApi + "/api/books", content);
+        response.EnsureSuccessStatusCode();
+    }
+    public async Task DeleteBookById(int id)
+    {
+        var response = await _httpClient.DeleteAsync($"{BaseApi}/api/books/{id}");
+
+        if (!response.IsSuccessStatusCode)
+        {
+            // Handle unsuccessful API request
+            throw new Exception($"Failed to delete book. Status code: {response.StatusCode}");
+        }
+    }
+    public async Task<Book> GetBookById(int id)
+    {
+        var response = await _httpClient.GetAsync($"{BaseApi}/api/books/{id}");
+
+        if (response.IsSuccessStatusCode)
+        {
+            var content = await response.Content.ReadAsStringAsync();
+            var book = JsonSerializer.Deserialize<Book>(content, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
+
+            return book;
+        }
+
+        // Handle unsuccessful API request
+        throw new Exception($"Failed to retrieve book. Status code: {response.StatusCode}");
+    }
+
+
+    public async Task UpdateBook(int id, BookDTO book)
+    {
+        var json = JsonSerializer.Serialize(book);
+        var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+        var response = await _httpClient.PutAsync($"{BaseApi}/api/books/{id}", content);
+        response.EnsureSuccessStatusCode();
+    }
 }
+
+
+
+
+
+
